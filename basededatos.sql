@@ -3,7 +3,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 -- 
--- Estructura de tabla para la tabla `albalinea`
+-- Estructura de tabla para la tabla `albalinea` es un comentatio
 -- 
 
 CREATE TABLE `albalinea` (

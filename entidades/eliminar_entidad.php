@@ -1,4 +1,6 @@
 <?
+
+
 include ("../conectar.php"); 
 
 $codentidad=$_GET["codentidad"];

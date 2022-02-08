@@ -1,0 +1,283 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.960
+Soy Blaine Sundrud, capacitación y certificación de AWS.
+
+00:00:04.960 --> 00:00:08.537
+Llevo más años enseñando tecnología y estoy dispuesto a admitirlo.
+
+00:00:08.537 --> 00:00:13.216
+Después de pasar un tiempo enseñando en la industria periodística, me mudé a AWS,
+
+00:00:13.216 --> 00:00:18.878
+donde he impartido clases a nivel mundial sobre muchas disciplinas diferentes, como seguridad,
+
+00:00:18.878 --> 00:00:24.350
+arquitectura en la nube, DevOps, big data, AI y ML e historia del teatro.
+
+00:00:24.350 --> 00:00:29.300
+Mi mamá era maestra, mi papá era maestro, mi abuelo era cantinero.
+
+00:00:29.300 --> 00:00:30.330
+Nací para esto.
+
+00:00:31.440 --> 00:00:35.920
+>> Hola, soy Morgan Willis, tecnólogo sénior de la nube en AWS.
+
+00:00:35.920 --> 00:00:39.117
+Empecé en el mundo de las TI hace unos diez años y en el camino,
+
+00:00:39.117 --> 00:00:41.880
+Decidí que me faltaba algo.
+
+00:00:41.880 --> 00:00:43.440
+Echaba de menos la ayuda y
+
+00:00:43.440 --> 00:00:48.040
+aspecto de enseñanza de TI que tuve en mi primer trabajo en soporte de TI.
+
+00:00:48.040 --> 00:00:52.138
+Así que comencé a enseñar desarrollo de software en diferentes áreas alrededor
+
+00:00:52.138 --> 00:00:55.710
+los EE. UU. y finalmente aterricé aquí en AWS.
+
+00:00:55.710 --> 00:00:57.551
+Donde como tecnólogo en la nube,
+
+00:00:57.551 --> 00:01:00.832
+Puedo apoyar a otros en su viaje a la nube todos los días.
+
+00:01:00.832 --> 00:01:04.034
+>> Y yo soy Rudy Chetty, vengo de la soleada Ciudad del Cabo,
+
+00:01:04.034 --> 00:01:08.040
+Sudáfrica, hogar de comida para perros y comida para conejos.
+
+00:01:08.040 --> 00:01:12.420
+Soy arquitecto de soluciones y trabajo en AWS desde hace más de tres años.
+
+00:01:12.420 --> 00:01:16.710
+Enseñar es mi pasión y no puedo esperar a que te sumerjas en el curso y aprendas.
+
+00:01:16.710 --> 00:01:24.340
+[EXTRANJERO] Muchas gracias y buena suerte.
+
+00:01:24.340 --> 00:01:29.972
+[SONIDO] >> Esto
+
+00:01:29.972 --> 00:01:34.697
+El curso cubrirá toda la información esencial que necesita comprender para
+
+00:01:34.697 --> 00:01:39.700
+siéntase cómodo hablando de AWS, para saber por qué es beneficioso para su negocio.
+
+00:01:39.700 --> 00:01:43.386
+>> AWS ofrece una amplia gama de servicios para todas las empresas,
+
+00:01:43.386 --> 00:01:48.769
+comenzando con elementos básicos como almacenamiento informático y herramientas de seguridad de red hasta
+
+00:01:48.769 --> 00:01:54.025
+soluciones complejas como el aprendizaje automático de blockchain o la inteligencia artificial.
+
+00:01:54.025 --> 00:01:59.138
+Y plataformas de desarrollo de robots hasta conjuntos de herramientas muy especializados,
+
+00:01:59.138 --> 00:02:01.953
+como el sistema de gestión de producción de video y
+
+00:02:01.953 --> 00:02:05.390
+Satélites orbitales que puedes alquilar por minutos.
+
+00:02:05.390 --> 00:02:06.591
+>> Todo eso, sin embargo,
+
+00:02:06.591 --> 00:02:11.610
+es mucho más de lo que tenemos tiempo para cubrir en una clase básica como esta.
+
+00:02:11.610 --> 00:02:15.559
+Así que simplifiquemos la conversación comenzando con la nube fundamental
+
+00:02:15.559 --> 00:02:17.370
+modelo de cómputo.
+
+00:02:17.370 --> 00:02:22.680
+>> Casi toda la informática moderna se centra en un modelo básico de cliente-servidor.
+
+00:02:22.680 --> 00:02:25.013
+Ahora sé que puede ser más complicado que eso, así que
+
+00:02:25.013 --> 00:02:27.380
+echemos un vistazo a nuestra cafetería.
+
+00:02:27.380 --> 00:02:32.113
+>> Esta cafetería nos va a dar algunas metáforas del mundo real para ayudar
+
+00:02:32.113 --> 00:02:36.720
+entiende por qué AWS puede cambiar la forma en que opera su TI.
+
+00:02:36.720 --> 00:02:40.039
+>> Hagamos de Morgan el mesero, el abogado y
+
+00:02:40.039 --> 00:02:43.040
+Soy el cliente, el cliente.
+
+00:02:43.040 --> 00:02:44.610
+hago un pedido
+
+00:02:44.610 --> 00:02:47.280
+En este caso, es para el café.
+
+00:02:47.280 --> 00:02:50.940
+Ahora, en el mundo de la computación, la solicitud podría ser cualquier cosa.
+
+00:02:50.940 --> 00:02:54.684
+Podría ser el análisis del patrón de lluvia en Sudáfrica,
+
+00:02:54.684 --> 00:02:59.760
+o las últimas radiografías de tu rodilla, o vídeos de gatitos.
+
+00:02:59.760 --> 00:03:03.636
+Cualquiera que sea el negocio, básicamente un cliente hace una solicitud y
+
+00:03:03.636 --> 00:03:07.750
+con permisos, el servidor responde a esa solicitud.
+
+00:03:07.750 --> 00:03:09.750
+Todo lo que quiero es una bebida con cafeína.
+
+00:03:10.990 --> 00:03:16.396
+Morgan representa la parte del servidor del modelo de servidor cliente,
+
+00:03:16.396 --> 00:03:20.884
+en AWS para llamarse Amazon Elastic Compute Cloud o
+
+00:03:20.884 --> 00:03:25.750
+EC2, una instancia EC2, un servidor virtual.
+
+00:03:25.750 --> 00:03:27.766
+Entonces, desde un punto de vista arquitectónico,
+
+00:03:27.766 --> 00:03:31.270
+la transacción que hicimos es realmente simple de explicar.
+
+00:03:31.270 --> 00:03:35.360
+Yo, el usuario hice una solicitud a Morgan el servidor.
+
+00:03:35.360 --> 00:03:38.310
+Morgan validó que la solicitud era legítima.
+
+00:03:38.310 --> 00:03:40.490
+En este caso, ¿le di dinero?
+
+00:03:40.490 --> 00:03:43.339
+Luego ella devolvió una respuesta, que en este caso,
+
+00:03:43.339 --> 00:03:46.510
+es un blaster de bayas con tragos extra de caramelo.
+
+00:03:46.510 --> 00:03:50.336
+>> Ahora, en el mundo real, las aplicaciones pueden volverse más complicadas que
+
+00:03:50.336 --> 00:03:53.710
+una sola transacción con un solo servidor.
+
+00:03:53.710 --> 00:03:59.100
+En una solución comercial que es más madura, puede volverse hermosamente compleja.
+
+00:03:59.100 --> 00:04:02.630
+>> Para evitar esta complejidad, vamos a empezar de forma sencilla.
+
+00:04:02.630 --> 00:04:05.178
+Construiremos esta discusión, para que sea fácil para
+
+00:04:05.178 --> 00:04:08.850
+nadie para entender cómo estos conceptos se construyen unos sobre otros.
+
+00:04:08.850 --> 00:04:13.870
+Entonces, al final, esos conceptos complejos serán fáciles de entender.
+
+00:04:13.870 --> 00:04:20.159
+Comencemos con un concepto clave de AWS, y es que solo paga por lo que usa.
+
+00:04:21.260 --> 00:04:24.080
+>> Este principio tiene sentido cuando diriges una cafetería.
+
+00:04:25.090 --> 00:04:28.210
+A los empleados solo se les paga cuando están en la tienda trabajando.
+
+00:04:29.590 --> 00:04:32.190
+Si Rudy o Morgan están fuera de horario, bueno, entonces no se les paga.
+
+00:04:34.360 --> 00:04:37.858
+El dueño de la tienda simplemente decide cuántos baristas se necesitan y
+
+00:04:37.858 --> 00:04:40.600
+entonces solo paga por las horas que trabajan.
+
+00:04:40.600 --> 00:04:44.746
+Por ejemplo, la cafetería está a punto de lanzar una nueva bebida,
+
+00:04:44.746 --> 00:04:47.570
+la especia del monstruo de calabaza.
+
+00:04:47.570 --> 00:04:49.384
+En previsión de este lanzamiento,
+
+00:04:49.384 --> 00:04:53.010
+siempre puede dotar su tienda con una docena de baristas durante todo el día,
+
+00:04:53.010 --> 00:04:57.670
+en caso de que de repente tengas un subidón inesperado en algún momento del día.
+
+00:04:57.670 --> 00:05:00.601
+Solo seamos honestos, durante la mayor parte de su día,
+
+00:05:00.601 --> 00:05:06.070
+no tiene suficientes clientes para justificar el pago de todos esos empleados.
+
+00:05:06.070 --> 00:05:10.430
+>> Y, sin embargo, esto es exactamente lo que sucede en un centro de datos en las instalaciones.
+
+00:05:10.430 --> 00:05:13.380
+No puedes simplemente chasquear los dedos y triplicar tu capacidad.
+
+00:05:13.380 --> 00:05:16.116
+En AWS, no paga nada por adelantado y
+
+00:05:16.116 --> 00:05:20.020
+no tiene que preocuparse por las limitaciones de capacidad.
+
+00:05:20.020 --> 00:05:24.998
+>> Cuando necesites instancias o baristas, solo haces clic en un botón y los tienes,
+
+00:05:24.998 --> 00:05:26.728
+entonces no los necesitas.
+
+00:05:26.728 --> 00:05:33.170
+Otro clic y desaparecen, y dejas de pagar por ellos.
+
+00:05:33.170 --> 00:05:37.720
+De la misma manera que no pagas a los empleados por horas, que no están trabajando.
+
+00:05:37.720 --> 00:05:42.194
+>> Así que paga por lo que necesitas se convierte en el primer valor clave de muchos por
+
+00:05:42.194 --> 00:05:44.487
+administrar su negocio en AWS.
+
+00:05:44.487 --> 00:05:46.301
+Y esa es realmente la razón por la que estamos aquí.
+
+00:05:46.301 --> 00:05:52.260
+Para ayudarlo a comprender cómo se creó AWS para ayudarlo a administrar mejor su negocio.
+
+00:05:52.260 --> 00:05:53.724
+>> Esperamos que te quedes
+
+00:05:53.724 --> 00:05:56.844
+todo el curso a medida que profundizamos en estos conceptos y
+
+00:05:56.844 --> 00:06:00.680
+ayudó a lanzarlo en su viaje para convertirse en un profesional de la nube.

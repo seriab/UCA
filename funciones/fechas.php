@@ -19,3 +19,6 @@ function explota($fecha) // local2bd
 	return implode("-",$vector_fecha);
 };
 ?>
+function asdas(*){
+	
+}

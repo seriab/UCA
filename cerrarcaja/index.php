@@ -26,10 +26,10 @@ $hoy=date("d/m/Y");
 		
 		var cursor;
 		if (document.all) {
-		// Está utilizando EXPLORER
+		// Estï¿½ utilizando EXPLORER1111
 		cursor='hand';
 		} else {
-		// Está utilizando MOZILLA/NETSCAPE
+		// Estï¿½ utilizando MOZILLA/NETSCAPE
 		cursor='pointer';
 		}
 		

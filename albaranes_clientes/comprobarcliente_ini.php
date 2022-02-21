@@ -32,7 +32,7 @@ function limpiar() {
 		<? 
 	} else { ?>
 	<script>
-	alert ("No existe ningun cliente con ese codigo");
+	alert ("No existe ningun cliente con ese codigo 1237891011");
 	limpiar();
 	</script>
 	<? }

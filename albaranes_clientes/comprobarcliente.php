@@ -34,7 +34,7 @@ function limpiar() {
 		<? 
 	} else { ?>
 	<script>
-	alert ("No existe ningun cliente con ese codigo");
+	alert ("No existe ningun cliente con ese codigo123");
 	limpiar();
 	</script>
 	<? }

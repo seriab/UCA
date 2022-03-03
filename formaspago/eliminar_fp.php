@@ -1,5 +1,5 @@
 <?
-include ("../conectar.php"); 
+include ("../conectar.php "); 
 
 $codformapago=$_GET["codformapago"];
 $cadena_busqueda=$_GET["cadena_busqueda"];

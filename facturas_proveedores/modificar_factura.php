@@ -2,7 +2,7 @@
 include ("../conectar.php"); 
 include ("../funciones/fechas.php"); 
 
-$codfactura=$_GET["codfactura"];
+$codfactura=$_GET["codfactura"];1
 $codproveedor=$_GET["codproveedor"];
 $sel_alb="SELECT * FROM facturasp WHERE codfactura='$codfactura' AND codproveedor='$codproveedor'";
 $rs_alb=mysql_query($sel_alb);

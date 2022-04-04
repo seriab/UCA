@@ -1,0 +1,1246 @@
+{
+	"domain": {
+		"service": "regionmurcia",
+		"subservice": "/medioambiente"
+	},
+	"contextBroker": {
+		"protocol": "http",
+		"host": "iot.demo.urbo2.es",
+		"port": 1026,
+		"ngsiVersion": "2.0"
+	},
+	"authentication": {
+		"provider": "keystone",
+		"protocol": "http",
+		"host": "iot.demo.urbo2.es",
+		"port": 5001,
+		"user": "admin_murcia",
+		"password": "4dmin_murcia",
+		"retry": {
+			"times": 10,
+			"interval": 1000
+		}
+	},
+	"exports": {
+		"each_hour": "0 0 */1 * * *"
+	},
+	"globals": {
+		"temperature1": 0,
+		"temperature2": 0,
+		"temperature3": 0,
+		"temperature4": 0,
+		"temperature5": 0,
+		"LAmax1": 0,
+		"LAmin1": 0,
+		"LAmax2": 0,
+		"LAmin2": 0,
+		"LAmax3": 0,
+		"LAmin3": 0
+	},
+	"entities": [
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-AQO-001",
+			"entity_type": "AirQualityObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "PM1",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},				
+				{
+					"name": "airQualityIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var f = function() {var random = Math.floor(Math.random() * 6 ); return random;}; var r = f(); module.exports = { result: r, state: { globals: { 'ENT-AQO-001' : { airQualityIndex: r } } } } )"
+				},
+				{
+					"name": "airQualityLevel",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function(index) {var list = ['Extremadamente desfavorable','Muy desfavorable','Desfavorable','Regular','Razonablemente buena','Buena']; return list[index];}; var r = f(global['ENT-AQO-001'].airQualityIndex); module.exports = { result: r, state: { globals: { 'ENT-AQO-001' : { airQualityLevel: r } } } }; )"
+				},
+				{
+					"name": "SO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1250 - 751) + 1) + 751;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (750 - 501) + 1) + 501;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (500 - 351) + 1) + 351;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (350 - 201) + 1) + 201;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (200 - 101) + 1) + 101;}else{ret = Math.floor(Math.random() * 101);} return ret;}; var r = f(global['ENT-AQO-001'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM10",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1200 - 151) + 1) + 151;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (150 - 101) + 1) + 101;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (50 - 41) + 1) + 41;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (40 - 21) + 1) + 21;}else{ret = Math.floor(Math.random() * 21);} return ret;}; var r = f(global['ENT-AQO-001'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM25",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 76) + 1) + 76;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (75 - 51) + 1) + 51;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (50 - 26) + 1) + 26;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (25 - 21) + 1) + 21;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (20 - 11) + 1) + 11;}else{ret = Math.floor(Math.random() * 11);} return ret;}; var r = f(global['ENT-AQO-001'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "CO",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "CO2",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "NO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1000 - 341) + 1) + 341;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (340 - 231) + 1) + 231;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (230 - 121) + 1) + 121;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (120 - 91) + 1) + 91;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (90 - 41) + 1) + 41;}else{ret = Math.floor(Math.random() * 41);} return ret;}; var r = f(global['ENT-AQO-001'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "O3",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 381) + 1) + 381;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (380 - 241) + 1) + 241;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (240 - 131) + 1) + 131;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (130 - 101) + 1) + 101;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else{ret = Math.floor(Math.random() * 51);} return ret;}; var r = f(global['ENT-AQO-001'].airQualityLevel); module.exports = { result: r })"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-AQO-002",
+			"entity_type": "AirQualityObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "PM1",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "airQualityIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var f = function() {var random = Math.floor(Math.random() * 6 ); return random;}; var r = f(); module.exports = { result: r, state: { globals: { 'ENT-AQO-002' : { airQualityIndex: r } } } } )"
+				},
+				{
+					"name": "airQualityLevel",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function(index) {var list = ['Extremadamente desfavorable','Muy desfavorable','Desfavorable','Regular','Razonablemente buena','Buena']; return list[index];}; var r = f(global['ENT-AQO-002'].airQualityIndex); module.exports = { result: r, state: { globals: { 'ENT-AQO-002' : { airQualityLevel: r } } } }; )"
+				},
+				{
+					"name": "SO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1250 - 751) + 1) + 751;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (750 - 501) + 1) + 501;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (500 - 351) + 1) + 351;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (350 - 201) + 1) + 201;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (200 - 101) + 1) + 101;}else{ret = Math.floor(Math.random() * 101);} return ret;}; var r = f(global['ENT-AQO-002'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM10",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1200 - 151) + 1) + 151;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (150 - 101) + 1) + 101;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (50 - 41) + 1) + 41;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (40 - 21) + 1) + 21;}else{ret = Math.floor(Math.random() * 21);} return ret;}; var r = f(global['ENT-AQO-002'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM25",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 76) + 1) + 76;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (75 - 51) + 1) + 51;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (50 - 26) + 1) + 26;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (25 - 21) + 1) + 21;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (20 - 11) + 1) + 11;}else{ret = Math.floor(Math.random() * 11);} return ret;}; var r = f(global['ENT-AQO-002'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "CO",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "CO2",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "NO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1000 - 341) + 1) + 341;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (340 - 231) + 1) + 231;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (230 - 121) + 1) + 121;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (120 - 91) + 1) + 91;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (90 - 41) + 1) + 41;}else{ret = Math.floor(Math.random() * 41);} return ret;}; var r = f(global['ENT-AQO-002'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "O3",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 381) + 1) + 381;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (380 - 241) + 1) + 241;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (240 - 131) + 1) + 131;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (130 - 101) + 1) + 101;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else{ret = Math.floor(Math.random() * 51);} return ret;}; var r = f(global['ENT-AQO-002'].airQualityLevel); module.exports = { result: r })"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-AQO-003",
+			"entity_type": "AirQualityObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "PM1",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},				
+				{
+					"name": "airQualityIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var f = function() {var random = Math.floor(Math.random() * 6 ); return random;}; var r = f(); module.exports = { result: r, state: { globals: { 'ENT-AQO-003' : { airQualityIndex: r } } } } )"
+				},
+				{
+					"name": "airQualityLevel",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function(index) {var list = ['Extremadamente desfavorable','Muy desfavorable','Desfavorable','Regular','Razonablemente buena','Buena']; return list[index];}; var r = f(global['ENT-AQO-003'].airQualityIndex); module.exports = { result: r, state: { globals: { 'ENT-AQO-003' : { airQualityLevel: r } } } }; )"
+				},
+				{
+					"name": "SO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1250 - 751) + 1) + 751;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (750 - 501) + 1) + 501;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (500 - 351) + 1) + 351;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (350 - 201) + 1) + 201;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (200 - 101) + 1) + 101;}else{ret = Math.floor(Math.random() * 101);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM10",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1200 - 151) + 1) + 151;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (150 - 101) + 1) + 101;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (50 - 41) + 1) + 41;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (40 - 21) + 1) + 21;}else{ret = Math.floor(Math.random() * 21);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM25",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 76) + 1) + 76;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (75 - 51) + 1) + 51;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (50 - 26) + 1) + 26;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (25 - 21) + 1) + 21;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (20 - 11) + 1) + 11;}else{ret = Math.floor(Math.random() * 11);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "CO",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "CO2",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "NO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1000 - 341) + 1) + 341;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (340 - 231) + 1) + 231;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (230 - 121) + 1) + 121;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (120 - 91) + 1) + 91;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (90 - 41) + 1) + 41;}else{ret = Math.floor(Math.random() * 41);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "O3",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 381) + 1) + 381;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (380 - 241) + 1) + 241;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (240 - 131) + 1) + 131;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (130 - 101) + 1) + 101;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else{ret = Math.floor(Math.random() * 51);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-AQO-004",
+			"entity_type": "AirQualityObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "PM1",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},				
+				{
+					"name": "airQualityIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var f = function() {var random = Math.floor(Math.random() * 6 ); return random;}; var r = f(); module.exports = { result: r, state: { globals: { 'ENT-AQO-003' : { airQualityIndex: r } } } } )"
+				},
+				{
+					"name": "airQualityLevel",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function(index) {var list = ['Extremadamente desfavorable','Muy desfavorable','Desfavorable','Regular','Razonablemente buena','Buena']; return list[index];}; var r = f(global['ENT-AQO-003'].airQualityIndex); module.exports = { result: r, state: { globals: { 'ENT-AQO-003' : { airQualityLevel: r } } } }; )"
+				},
+				{
+					"name": "SO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1250 - 751) + 1) + 751;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (750 - 501) + 1) + 501;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (500 - 351) + 1) + 351;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (350 - 201) + 1) + 201;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (200 - 101) + 1) + 101;}else{ret = Math.floor(Math.random() * 101);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM10",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1200 - 151) + 1) + 151;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (150 - 101) + 1) + 101;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (50 - 41) + 1) + 41;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (40 - 21) + 1) + 21;}else{ret = Math.floor(Math.random() * 21);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "PM25",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 76) + 1) + 76;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (75 - 51) + 1) + 51;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (50 - 26) + 1) + 26;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (25 - 21) + 1) + 21;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (20 - 11) + 1) + 11;}else{ret = Math.floor(Math.random() * 11);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "CO",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "CO2",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(100,350)],[3,random(100,350)],[6,random(100,350)],[9,random(100,350)],[12,random(100,350)],[15,random(100,350)],[18,random(100,350)],[21,random(100,350)],[23,random(100,350)]])"
+				},
+				{
+					"name": "NO2",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (1000 - 341) + 1) + 341;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (340 - 231) + 1) + 231;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (230 - 121) + 1) + 121;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (120 - 91) + 1) + 91;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (90 - 41) + 1) + 41;}else{ret = Math.floor(Math.random() * 41);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				},
+				{
+					"name": "O3",
+					"type": "Number",
+					"value": "attribute-function-interpolator( var f = function(category) { var ret; if(category === 'Extremadamente desfavorable'){ret = Math.floor(Math.random() * (800 - 381) + 1) + 381;}else if(category === 'Muy desfavorable'){ret = Math.floor(Math.random() * (380 - 241) + 1) + 241;}else if(category === 'Desfavorable'){ret = Math.floor(Math.random() * (240 - 131) + 1) + 131;}else if(category === 'Regular'){ret = Math.floor(Math.random() * (130 - 101) + 1) + 101;}else if(category === 'Razonablemente buena'){ret = Math.floor(Math.random() * (100 - 51) + 1) + 51;}else{ret = Math.floor(Math.random() * 51);} return ret;}; var r = f(global['ENT-AQO-003'].airQualityLevel); module.exports = { result: r })"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-WO-001",
+			"entity_type": "WeatherObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "battery",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(30,25)],[3,random(25,15)],[6,random(15,5)],[9,random(20,25)],[12,random(35,45)],[15,random(45,55)],[18,random(55,65)],[21,random(35,45)],[23,random(25,35)]])"
+				},
+				{
+					"name": "UV",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,2)],[3,random(1,2)],[6,random(1,2)],[9,random(3,7)],[12,random(4,10)],[15,random(5,15)],[18,random(5,12)],[21,random(1,3)],[23,random(1,2)]])"
+				},
+				{
+					"name": "atmosphericPressure",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,1500)],[3,random(1,1500)],[6,random(1,1500)],[9,random(1,1500)],[12,random(1,1500)],[15,random(1,1500)],[18,random(1,1500)],[21,random(1,1500)],[23,random(1,1500)]])"
+				},
+				{
+					"name": "precipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "precipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "solarRadiation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (50 - 10) + 1) + 10)"
+				},
+				{
+					"name": "dailyEvapotranspiration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 5)"
+				},
+				{
+					"name": "relativeHumidity",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(0,1)],[3,random(0,1)],[6,random(0,1)],[9,random(0,1)],[12,random(0,1)],[15,random(0,1)],[18,random(0,1)],[21,random(0,1)],[23,random(0,1)]])"
+				},
+				{
+					"name": "temperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.floor(Math.random() * (40 - 5) + 1) + 5; module.exports = { result: t; state: { globals: { temperature1: t }}})"
+				},
+				{
+					"name": "estimatedTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: temperature1 + Math.floor(Math.random() * 5) - 2.5 })"
+				},
+				{
+					"name": "visibility",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['veryPoor','poor','moderate','good','veryGood','excellent']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "weatherType",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['clearNight','sunnyDay','slightlyCloudy','partlyCloudy','mist','fog','highClouds','cloudy','veryCloudy','overcast','lightRainShower','drizzle','lightRain','heavyRainShower','heavyRain','sleetShower','sleet','hailShower','hail','shower','lightSnow','snow','heavySnowShower','heavySnow','thunderShower','thunder']; var random = Math.floor(Math.random() * 26 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windDirection",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 361))"
+				},
+				{
+					"name": "windDirectionCompass",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['N','NE','E','SE','S','SO','O','NO']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "compassMagic",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var d = ['N ', 'NE', 'E ', 'SE', 'S ', 'SO', 'O ', 'NO', 'N' ]; var r = ''; for (var i = 0; i < 8; i++) { var random = Math.floor(Math.random() * 6 ); r = r + random.toString() + d[i]; }; module.exports = {result: r})"
+				},
+				{
+					"name": "windSpeed",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (40 - 1) + 1) + 1)"
+				},
+				{
+					"name": "absoluteHumidity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 1000))"
+				},
+				{
+					"name": "solarAzimuthAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 180))"
+				},
+				{
+					"name": "dewPoint",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random()*20 - 9))"
+				},
+				{
+					"name": "illuminance",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 120))"
+				},
+				{
+					"name": "corrosion",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "corrosionIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random())"
+				},
+				{
+					"name": "solarElevationAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 90))"
+				},
+				{
+					"name": "dailyPrecipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 200))"
+				},
+				{
+					"name": "dailyPrecipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "dailyPrecipitationDuration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(/* state: prevDuration1 = 0 */ var curDay = (new SimulationDate()).getDay(); var currDuration = Math.floor(Math.random() * 3600); if (curDay == prevDay) { currDuration += prevDuration1 }; module.exports = { result: currDuration, state: { prevDuration1: currDuration, prevDay: currDay }})"
+				},
+				{
+					"name": "feelLikesTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 40 - 10))"
+				},
+				{
+					"name": "streamGauge",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 150))"
+				}
+			]
+		},
+			{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-WO-002",
+			"entity_type": "WeatherObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "battery",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(30,25)],[3,random(25,15)],[6,random(15,5)],[9,random(20,25)],[12,random(35,45)],[15,random(45,55)],[18,random(55,65)],[21,random(35,45)],[23,random(25,35)]])"
+				},
+				{
+					"name": "UV",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,2)],[3,random(1,2)],[6,random(1,2)],[9,random(3,7)],[12,random(4,10)],[15,random(5,15)],[18,random(5,12)],[21,random(1,3)],[23,random(1,2)]])"
+				},
+				{
+					"name": "atmosphericPressure",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,1500)],[3,random(1,1500)],[6,random(1,1500)],[9,random(1,1500)],[12,random(1,1500)],[15,random(1,1500)],[18,random(1,1500)],[21,random(1,1500)],[23,random(1,1500)]])"
+				},
+				{
+					"name": "precipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "precipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "solarRadiation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (50 - 10) + 1) + 10)"
+				},
+				{
+					"name": "dailyEvapotranspiration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 5)"
+				},
+				{
+					"name": "relativeHumidity",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(0,1)],[3,random(0,1)],[6,random(0,1)],[9,random(0,1)],[12,random(0,1)],[15,random(0,1)],[18,random(0,1)],[21,random(0,1)],[23,random(0,1)]])"
+				},
+				{
+					"name": "temperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.floor(Math.random() * (40 - 5) + 1) + 5; module.exports = {result: t; state: { globals: { temperature2: t }}})"
+				},
+				{
+					"name": "estimatedTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: temperature2 + Math.floor(Math.random() * 5) - 2.5 })"
+				},
+				{
+					"name": "visibility",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['veryPoor','poor','moderate','good','veryGood','excellent']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "weatherType",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['clearNight','sunnyDay','slightlyCloudy','partlyCloudy','mist','fog','highClouds','cloudy','veryCloudy','overcast','lightRainShower','drizzle','lightRain','heavyRainShower','heavyRain','sleetShower','sleet','hailShower','hail','shower','lightSnow','snow','heavySnowShower','heavySnow','thunderShower','thunder']; var random = Math.floor(Math.random() * 26 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windDirection",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 361))"
+				},
+				{
+					"name": "windDirectionCompass",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['N','NE','E','SE','S','SO','O','NO']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windSpeed",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (40 - 1) + 1) + 1)"
+				},
+				{
+					"name": "absoluteHumidity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 1000))"
+				},
+				{
+					"name": "solarAzimuthAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 180))"
+				},
+				{
+					"name": "dewPoint",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random()*20 - 9))"
+				},
+				{
+					"name": "illuminance",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 120))"
+				},
+				{
+					"name": "corrosion",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "corrosionIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random())"
+				},
+				{
+					"name": "solarElevationAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 90))"
+				},
+				{
+					"name": "dailyPrecipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 200))"
+				},
+				{
+					"name": "dailyPrecipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "dailyPrecipitationDuration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(/* state: prevDuration2 = 0 */ var curDay = (new SimulationDate()).getDay(); var currDuration = Math.floor(Math.random() * 3600); if (curDay == prevDay) { currDuration += prevDuration2 }; module.exports = { result: currDuration, state: { prevDuration2: currDuration, prevDay: currDay }})"
+				},
+				{
+					"name": "feelLikesTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 40 - 10))"
+				},
+				{
+					"name": "streamGauge",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 150))"
+				}
+			]
+		},
+			{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-WO-003",
+			"entity_type": "WeatherObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "battery",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(30,25)],[3,random(25,15)],[6,random(15,5)],[9,random(20,25)],[12,random(35,45)],[15,random(45,55)],[18,random(55,65)],[21,random(35,45)],[23,random(25,35)]])"
+				},
+				{
+					"name": "UV",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,2)],[3,random(1,2)],[6,random(1,2)],[9,random(3,7)],[12,random(4,10)],[15,random(5,15)],[18,random(5,12)],[21,random(1,3)],[23,random(1,2)]])"
+				},
+				{
+					"name": "atmosphericPressure",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,1500)],[3,random(1,1500)],[6,random(1,1500)],[9,random(1,1500)],[12,random(1,1500)],[15,random(1,1500)],[18,random(1,1500)],[21,random(1,1500)],[23,random(1,1500)]])"
+				},
+				{
+					"name": "precipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "precipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "solarRadiation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (50 - 10) + 1) + 10)"
+				},
+				{
+					"name": "dailyEvapotranspiration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 5)"
+				},
+				{
+					"name": "relativeHumidity",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(0,1)],[3,random(0,1)],[6,random(0,1)],[9,random(0,1)],[12,random(0,1)],[15,random(0,1)],[18,random(0,1)],[21,random(0,1)],[23,random(0,1)]])"
+				},
+				{
+					"name": "temperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.floor(Math.random() * (40 - 5) + 1) + 5; module.exports = {result: t; state: { globals: { temperature3: t }}})"
+				},
+				{
+					"name": "estimatedTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: temperature3 + Math.floor(Math.random() * 5) - 2.5 })"
+				},
+				{
+					"name": "visibility",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['veryPoor','poor','moderate','good','veryGood','excellent']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "weatherType",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['clearNight','sunnyDay','slightlyCloudy','partlyCloudy','mist','fog','highClouds','cloudy','veryCloudy','overcast','lightRainShower','drizzle','lightRain','heavyRainShower','heavyRain','sleetShower','sleet','hailShower','hail','shower','lightSnow','snow','heavySnowShower','heavySnow','thunderShower','thunder']; var random = Math.floor(Math.random() * 26 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windDirection",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 361))"
+				},
+				{
+					"name": "windDirectionCompass",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['N','NE','E','SE','S','SO','O','NO']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windSpeed",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (40 - 1) + 1) + 1)"
+				},
+				{
+					"name": "absoluteHumidity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 1000))"
+				},
+				{
+					"name": "solarAzimuthAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 180))"
+				},
+				{
+					"name": "dewPoint",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random()*20 - 9))"
+				},
+				{
+					"name": "illuminance",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 120))"
+				},
+				{
+					"name": "corrosion",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "corrosionIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random())"
+				},
+				{
+					"name": "solarElevationAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 90))"
+				},
+				{
+					"name": "dailyPrecipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 200))"
+				},
+				{
+					"name": "dailyPrecipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "dailyPrecipitationDuration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(/* state: prevDuration3 = 0 */ var curDay = (new SimulationDate()).getDay(); var currDuration = Math.floor(Math.random() * 3600); if (curDay == prevDay) { currDuration += prevDuration3 }; module.exports = { result: currDuration, state: { prevDuration3: currDuration, prevDay: currDay }})"
+				},
+				{
+					"name": "feelLikesTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 40 - 10))"
+				},
+				{
+					"name": "streamGauge",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 150))"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-WO-004",
+			"entity_type": "WeatherObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "battery",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(30,25)],[3,random(25,15)],[6,random(15,5)],[9,random(20,25)],[12,random(35,45)],[15,random(45,55)],[18,random(55,65)],[21,random(35,45)],[23,random(25,35)]])"
+				},
+				{
+					"name": "UV",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,2)],[3,random(1,2)],[6,random(1,2)],[9,random(3,7)],[12,random(4,10)],[15,random(5,15)],[18,random(5,12)],[21,random(1,3)],[23,random(1,2)]])"
+				},
+				{
+					"name": "atmosphericPressure",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,1500)],[3,random(1,1500)],[6,random(1,1500)],[9,random(1,1500)],[12,random(1,1500)],[15,random(1,1500)],[18,random(1,1500)],[21,random(1,1500)],[23,random(1,1500)]])"
+				},
+				{
+					"name": "precipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "precipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "solarRadiation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (50 - 10) + 1) + 10)"
+				},
+				{
+					"name": "dailyEvapotranspiration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 5)"
+				},
+				{
+					"name": "relativeHumidity",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(0,1)],[3,random(0,1)],[6,random(0,1)],[9,random(0,1)],[12,random(0,1)],[15,random(0,1)],[18,random(0,1)],[21,random(0,1)],[23,random(0,1)]])"
+				},
+				{
+					"name": "temperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.floor(Math.random() * (40 - 5) + 1) + 5; module.exports = {result: t; state: { globals: { temperature4: t }}})"
+				},
+				{
+					"name": "estimatedTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: temperature4 + Math.floor(Math.random() * 5) - 2.5 })"
+				},
+				{
+					"name": "visibility",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['veryPoor','poor','moderate','good','veryGood','excellent']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "weatherType",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['clearNight','sunnyDay','slightlyCloudy','partlyCloudy','mist','fog','highClouds','cloudy','veryCloudy','overcast','lightRainShower','drizzle','lightRain','heavyRainShower','heavyRain','sleetShower','sleet','hailShower','hail','shower','lightSnow','snow','heavySnowShower','heavySnow','thunderShower','thunder']; var random = Math.floor(Math.random() * 26 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windDirection",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 361))"
+				},
+				{
+					"name": "windDirectionCompass",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['N','NE','E','SE','S','SO','O','NO']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windSpeed",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (40 - 1) + 1) + 1)"
+				},
+				{
+					"name": "absoluteHumidity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 1000))"
+				},
+				{
+					"name": "solarAzimuthAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 180))"
+				},
+				{
+					"name": "dewPoint",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random()*20 - 9))"
+				},
+				{
+					"name": "illuminance",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 120))"
+				},
+				{
+					"name": "corrosion",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "corrosionIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random())"
+				},
+				{
+					"name": "solarElevationAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 90))"
+				},
+				{
+					"name": "dailyPrecipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 200))"
+				},
+				{
+					"name": "dailyPrecipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "dailyPrecipitationDuration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(/* state: prevDuration4 = 0 */ var curDay = (new SimulationDate()).getDay(); var currDuration = Math.floor(Math.random() * 3600); if (curDay == prevDay) { currDuration += prevDuration4 }; module.exports = { result: currDuration, state: { prevDuration4: currDuration, prevDay: currDay }})"
+				},
+				{
+					"name": "feelLikesTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 40 - 10))"
+				},
+				{
+					"name": "streamGauge",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 150))"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-WO-005",
+			"entity_type": "WeatherObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "battery",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(30,25)],[3,random(25,15)],[6,random(15,5)],[9,random(20,25)],[12,random(35,45)],[15,random(45,55)],[18,random(55,65)],[21,random(35,45)],[23,random(25,35)]])"
+				},
+				{
+					"name": "UV",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,2)],[3,random(1,2)],[6,random(1,2)],[9,random(3,7)],[12,random(4,10)],[15,random(5,15)],[18,random(5,12)],[21,random(1,3)],[23,random(1,2)]])"
+				},
+				{
+					"name": "atmosphericPressure",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(1,1500)],[3,random(1,1500)],[6,random(1,1500)],[9,random(1,1500)],[12,random(1,1500)],[15,random(1,1500)],[18,random(1,1500)],[21,random(1,1500)],[23,random(1,1500)]])"
+				},
+				{
+					"name": "precipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "precipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 10))"
+				},
+				{
+					"name": "solarRadiation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (50 - 10) + 1) + 10)"
+				},
+				{
+					"name": "dailyEvapotranspiration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 5)"
+				},
+				{
+					"name": "relativeHumidity",
+					"type": "Number",
+					"value": "time-random-linear-interpolator([[0,random(0,1)],[3,random(0,1)],[6,random(0,1)],[9,random(0,1)],[12,random(0,1)],[15,random(0,1)],[18,random(0,1)],[21,random(0,1)],[23,random(0,1)]])"
+				},
+				{
+					"name": "temperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.floor(Math.random() * (40 - 5) + 1) + 5; module.exports = {result: t; state: { globals: { temperature5: t }}})"
+				},
+				{
+					"name": "estimatedTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: temperature5 + Math.floor(Math.random() * 5) - 2.5 })"
+				},
+				{
+					"name": "visibility",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['veryPoor','poor','moderate','good','veryGood','excellent']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "weatherType",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['clearNight','sunnyDay','slightlyCloudy','partlyCloudy','mist','fog','highClouds','cloudy','veryCloudy','overcast','lightRainShower','drizzle','lightRain','heavyRainShower','heavyRain','sleetShower','sleet','hailShower','hail','shower','lightSnow','snow','heavySnowShower','heavySnow','thunderShower','thunder']; var random = Math.floor(Math.random() * 26 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windDirection",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 361))"
+				},
+				{
+					"name": "windDirectionCompass",
+					"type": "Text",
+					"value": "attribute-function-interpolator( var f = function() {var list = ['N','NE','E','SE','S','SO','O','NO']; var random = Math.floor(Math.random() * 6 );  return list[random];}; var r = f(); module.exports = {result: r})"
+				},
+				{
+					"name": "windSpeed",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * (40 - 1) + 1) + 1)"
+				},
+				{
+					"name": "absoluteHumidity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 1000))"
+				},
+				{
+					"name": "solarAzimuthAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 180))"
+				},
+				{
+					"name": "dewPoint",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random()*20 - 9))"
+				},
+				{
+					"name": "illuminance",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 120))"
+				},
+				{
+					"name": "corrosion",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "corrosionIndex",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random())"
+				},
+				{
+					"name": "solarElevationAngle",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 90))"
+				},
+				{
+					"name": "dailyPrecipitation",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 200))"
+				},
+				{
+					"name": "dailyPrecipitationIntensity",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 100))"
+				},
+				{
+					"name": "dailyPrecipitationDuration",
+					"type": "Number",
+					"value": "attribute-function-interpolator(/* state: prevDuration5 = 0 */ var curDay = (new SimulationDate()).getDay(); var currDuration = Math.floor(Math.random() * 3600); if (curDay == prevDay) { currDuration += prevDuration5 }; module.exports = { result: currDuration, state: { prevDuration5: currDuration, prevDay: currDay }})"
+				},
+				{
+					"name": "feelLikesTemperature",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 40 - 10))"
+				},
+				{
+					"name": "streamGauge",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.floor(Math.random() * 150))"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-NLO-001",
+			"entity_type": "NoiseLevelObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "LAeq",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAFmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAFmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LASmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LASmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.random() * 10; module.exports = { result: t, state: { globals: { LAmax1: t }}})"
+				},
+				{
+					"name": "LAmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.random() * (LAmax1 / 10); module.exports = { result: t, state: { globals: { LAmin1: t }}})"
+				},
+				{
+					"name": "LA1",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax1 - Math.random() * 0.1 * (LAmax1 - LAmin1) })"
+				},
+				{
+					"name": "LA10",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax1 - 0.1 * (LAmax1 - LAmin1) - Math.random() * 0.2 * (LAmax1 - LAmin1) })"
+				},
+				{
+					"name": "LA50",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax1 - 0.3 * (LAmax1 - LAmin1) - Math.random() * 0.3 * (LAmax1 - LAmin1) })"
+				},
+				{
+					"name": "LA90",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax1 - 0.6 * (LAmax1 - LAmin1) - Math.random() * 0.2 * (LAmax1 - LAmin1) })"
+				},
+				{
+					"name": "LA99",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax1 - 0.8 * (LAmax1 - LAmin1) - Math.random() * 0.1 * (LAmax1 - LAmin1) })"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-NLO-002",
+			"entity_type": "NoiseLevelObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "LAeq",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAFmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAFmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LASmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LASmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.random() * 10; module.exports = { result: t, state: { globals: { LAmax2: t }}})"
+				},
+				{
+					"name": "LAmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.random() * (LAmax2 / 10); module.exports = { result: t, state: { globals: { LAmin2: t }}})"
+				},
+				{
+					"name": "LA1",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax2 - Math.random() * 0.1 * (LAmax2 - LAmin2) })"
+				},
+				{
+					"name": "LA10",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax2 - 0.1 * (LAmax2 - LAmin2) - Math.random() * 0.2 * (LAmax2 - LAmin2) })"
+				},
+				{
+					"name": "LA50",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax2 - 0.3 * (LAmax2 - LAmin2) - Math.random() * 0.3 * (LAmax2 - LAmin2) })"
+				},
+				{
+					"name": "LA90",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax2 - 0.6 * (LAmax2 - LAmin2) - Math.random() * 0.2 * (LAmax2 - LAmin2) })"
+				},
+				{
+					"name": "LA99",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax2 - 0.8 * (LAmax2 - LAmin2) - Math.random() * 0.1 * (LAmax2 - LAmin2) })"
+				}
+			]
+		},
+		{
+			"schedule": "import(each_hour)",
+			"entity_name": "ENT-NLO-003",
+			"entity_type": "NoiseLevelObserved",
+			"active": [
+				{
+					"name": "TimeInstant",
+					"type": "DateTime",
+					"value": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+				},
+				{
+					"name": "LAeq",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAFmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAFmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LASmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LASmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(Math.random() * 4)"
+				},
+				{
+					"name": "LAmax",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.random() * 10; module.exports = { result: t, state: { globals: { LAmax3: t }}})"
+				},
+				{
+					"name": "LAmin",
+					"type": "Number",
+					"value": "attribute-function-interpolator(var t = Math.random() * (LAmax3 / 10); module.exports = { result: t, state: { globals: { LAmin3: t }}})"
+				},
+				{
+					"name": "LA1",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax3 - Math.random() * 0.1 * (LAmax3 - LAmin3) })"
+				},
+				{
+					"name": "LA10",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax3 - 0.1 * (LAmax3 - LAmin3) - Math.random() * 0.2 * (LAmax3 - LAmin3) })"
+				},
+				{
+					"name": "LA50",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax3 - 0.3 * (LAmax3 - LAmin3) - Math.random() * 0.3 * (LAmax3 - LAmin3) })"
+				},
+				{
+					"name": "LA90",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax3 - 0.6 * (LAmax3 - LAmin3) - Math.random() * 0.2 * (LAmax3 - LAmin3) })"
+				},
+				{
+					"name": "LA99",
+					"type": "Number",
+					"value": "attribute-function-interpolator(module.exports = { result: LAmax3 - 0.8 * (LAmax3 - LAmin3) - Math.random() * 0.1 * (LAmax3 - LAmin3) })"
+				}
+			]
+		}
+	]
+}
